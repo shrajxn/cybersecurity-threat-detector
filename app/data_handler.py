@@ -22,6 +22,9 @@ def load_and_preprocess_data(file_path, save_path=None):
     
     event_frequency = df['EventId'].value_counts()
     df['EventFrequency'] = df['EventId'].map(event_frequency)
+
+    # Create binary anomaly label: 1 = Anomalous (WARN), 0 = Normal (INFO)
+    df['Anomalous'] = df['Level'].apply(lambda x: 1 if x == 'WARN' else 0)
     
     if save_path:
         df.to_csv(save_path, index=False)
