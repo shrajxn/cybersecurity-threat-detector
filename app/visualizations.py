@@ -1,5 +1,6 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def plot_event_template_frequency(df):
     """
@@ -30,4 +31,37 @@ def plot_anomaly_level_distribution(df):
     plt.ylabel('Count')
     plt.xticks(ticks=range(7), labels=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
     plt.legend(title='Level', loc='upper right')
+    plt.show()
+
+def plot_anomalous_pie_chart(df):
+    """
+    Draws a pie chart for the 'Anomalous' column in the dataset.
+    
+    Args:
+        df (pd.DataFrame): Preprocessed DataFrame.
+    """
+    # Count the occurrences of each class in the 'Anomalous' column
+    anomalous_counts = df['Anomalous'].value_counts()
+    anomalous_data = pd.DataFrame({
+        'Anomalous': ['Normal (0)', 'Anomalous (1)'],
+        'Count': anomalous_counts.values
+    })
+    
+    # Plotting the pie chart with consistent aesthetics
+    plt.figure(figsize=(12, 6))  # Same width as other plots
+    colors = ['#4CAF50', '#F44336']  # Matching colors
+    explode = [0, 0.1]  # Highlight anomalous
+    
+    plt.pie(
+        anomalous_data['Count'],
+        labels=anomalous_data['Anomalous'],
+        autopct='%1.1f%%',
+        startangle=140,
+        colors=colors,
+        explode=explode
+    )
+    
+    plt.title('Distribution of Normal and Anomalous Events', fontsize=14, weight='bold')
+    plt.axis('equal')  
+    plt.tight_layout()  
     plt.show()
